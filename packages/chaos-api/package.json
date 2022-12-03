@@ -1,0 +1,17 @@
+{
+  "name": "chaos-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier \"src/**/*.{js,mjs,ts,mts,md,json}\" --write",
+    "lint": "eslint \"src/**/*.{js,mjs,ts,mts}\"",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:types": "tsc --noEmit",
+    "watch": "tsc --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
