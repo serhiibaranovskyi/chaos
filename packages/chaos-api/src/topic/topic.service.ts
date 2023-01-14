@@ -1,8 +1,7 @@
 import type { PrismaClient } from '@prisma/client'
 
-import type { CreateTopicDto } from './dto/create-topic.dto'
-import type { Topic } from './interfaces/topic.interface'
-import type { UpdateTopicDto } from './dto/update-topic.dto'
+import type { CreateTopicDto, UpdateTopicDto } from './dto'
+import type { Topic } from './interfaces'
 
 export class TopicService {
   private db: PrismaClient

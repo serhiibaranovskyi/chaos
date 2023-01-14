@@ -7,14 +7,14 @@
     "build": "tsc",
     "dev": "pnpm run dev:docker:up",
     "dev:db:migrate": "prisma migrate dev",
-    "dev:docker:down": "docker compose -f ./docker/docker-compose.dev.yml down",
-    "dev:docker:up": "docker compose -f ./docker/docker-compose.dev.yml up -d",
+    "dev:docker:stop": "docker compose -f ./docker/docker-compose.dev.yml -p chaos-api stop",
+    "dev:docker:up": "docker compose -f ./docker/docker-compose.dev.yml -p chaos-api up -d",
     "format": "prettier \"src/**/*.{js,mjs,ts,mts,md,json}\" --write",
     "lint": "eslint \"src/**/*.{js,mjs,ts,mts}\"",
     "test": "./scripts/tests:run.sh",
     "test:db:migrate": "dotenv -e .env.test -- prisma migrate deploy",
-    "test:docker:down": "docker compose -f ./docker/docker-compose.test.yml down",
-    "test:docker:up": "dotenv -e .env.test -- docker compose -f ./docker/docker-compose.test.yml up -d",
+    "test:docker:down": "docker compose -f ./docker/docker-compose.test.yml -p chaos-api-test down",
+    "test:docker:up": "dotenv -e .env.test -- docker compose -f ./docker/docker-compose.test.yml -p chaos-api-test up -d",
     "test:types": "tsc --noEmit",
     "watch": "tsc --watch"
   },
@@ -26,6 +26,7 @@
     "prisma": "^4.8.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@jest/globals": "^29.3.1",
     "@types/node": "^18.11.18",
     "dotenv-cli": "^6.0.0",

@@ -8,7 +8,7 @@ if [ ! -f '.env.test' ]; then
 fi
 
 pnpm run test:docker:up
-# todo yse better method
+# todo use better method
 sleep 4
 pnpm run test:db:migrate
 dotenv -e .env.test -- jest -i

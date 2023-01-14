@@ -34,6 +34,7 @@ importers:
 
   packages/chaos-api:
     specifiers:
+      '@faker-js/faker': ^7.6.0
       '@jest/globals': ^29.3.1
       '@prisma/client': ^4.8.1
       '@types/node': ^18.11.18
@@ -47,6 +48,7 @@ importers:
       '@prisma/client': 4.8.1_prisma@4.8.1
       prisma: 4.8.1
     devDependencies:
+      '@faker-js/faker': 7.6.0
       '@jest/globals': 29.3.1
       '@types/node': 18.11.18
       dotenv-cli: 6.0.0
@@ -419,6 +421,11 @@ packages:
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /@faker-js/faker/7.6.0:
+    resolution: {integrity: sha512-XK6BTq1NDMo9Xqw/YkYyGjSsg44fbNwYRx7QK2CuoQgyy+f1rrTDHoExVM5PsyXCtfl2vs2vVJ0MN0yN6LppRw==}
+    engines: {node: '>=14.0.0', npm: '>=6.0.0'}
     dev: true
 
   /@gar/promisify/1.1.3:
