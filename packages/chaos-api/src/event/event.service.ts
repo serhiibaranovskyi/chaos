@@ -1,38 +1,30 @@
-import { prisma } from '../../prisma'
+import type { PrismaClient } from '@prisma/client'
 
-type CreateEventPayload = any
+import { CreateEventDto } from './dto'
+import { Event } from './interfaces'
+
 export class EventService {
-  async create(payload: CreateEventPayload) {
-    try {
-      return prisma.event.create({
-        data: {
-          payload,
+  private db: PrismaClient
+
+  public constructor(prisma: PrismaClient) {
+    this.db = prisma
+  }
+  public create(topicId: number, payload: CreateEventDto): Promise<Event> {
+    return this.db.event.create({
+      data: {
+        topic: {
+          connect: { id: topicId },
         },
-      })
-    } catch (err) {
-      throw err
-    }
+        payload,
+      },
+    })
   }
 
-  async delete(id: number) {
-    try {
-      const exists = await prisma.event.findUnique({
-        where: {
-          id,
-        },
-      })
-      if (!exists) {
-        return Promise.reject(
-          Error(`Can\`t delete event with provided id ${id}`)
-        )
-      }
-      return prisma.event.delete({
-        where: {
-          id,
-        },
-      })
-    } catch (err) {
-      throw err
-    }
+  public findById(id: number): Promise<Event | null> {
+    return this.db.event.findUnique({ where: { id } })
+  }
+
+  public async delete(id: number) {
+    return await this.db.event.delete({ where: { id } })
   }
 }
