@@ -1,4 +1,4 @@
-export type CreateTopicDto = {
+export type UpdateTopicDto = {
   description: string
   title: string
 }
