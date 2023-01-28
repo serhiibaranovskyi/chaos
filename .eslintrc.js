@@ -20,6 +20,7 @@ module.exports = {
     'no-var': 'error',
     'prefer-const': 'error',
     'prettier/prettier': 'warn',
+    '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/no-use-before-define': 'error',
     'import/order': [
       'warn',
