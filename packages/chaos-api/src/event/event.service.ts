@@ -1,14 +1,15 @@
 import type { PrismaClient } from '@prisma/client'
 
 import { CreateEventDto } from './dto'
-import { Event } from './interfaces'
+import { Event, IEventServiceInterface } from './interfaces'
 
-export class EventService {
+export class EventService implements IEventServiceInterface {
   private db: PrismaClient
 
   public constructor(prisma: PrismaClient) {
     this.db = prisma
   }
+
   public create(topicId: number, payload: CreateEventDto): Promise<Event> {
     return this.db.event.create({
       data: {
