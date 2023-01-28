@@ -35,8 +35,10 @@ importers:
   packages/chaos-api:
     specifiers:
       '@faker-js/faker': ^7.6.0
+      '@fastify/type-provider-typebox': ^2.4.0
       '@jest/globals': ^29.3.1
       '@prisma/client': ^4.8.1
+      '@sinclair/typebox': ^0.25.20
       '@types/node': ^18.11.18
       dotenv-cli: ^6.0.0
       fastify: ^4.12.0
@@ -46,7 +48,9 @@ importers:
       ts-node: ^10.9.1
       typescript: ^4.9.4
     dependencies:
+      '@fastify/type-provider-typebox': 2.4.0_kiriq47ynvnl462rq2oqkqkjni
       '@prisma/client': 4.8.1_prisma@4.8.1
+      '@sinclair/typebox': 0.25.20
       fastify: 4.12.0
       prisma: 4.8.1
     devDependencies:
@@ -450,6 +454,16 @@ packages:
     resolution: {integrity: sha512-ypZynRvXA3dibfPykQN3RB5wBdEUgSGgny8Qc6k163wYPLD4mEGEDkACp+00YmqkGvIm8D/xYoHajwyEdWD/eg==}
     dependencies:
       fast-json-stringify: 5.5.0
+    dev: false
+
+  /@fastify/type-provider-typebox/2.4.0_kiriq47ynvnl462rq2oqkqkjni:
+    resolution: {integrity: sha512-dP8KnpfyBD1FT1UxNWCRqSpKG69xYAK53q6MqUjuwYL7xvogXBbH/tpAMc1kZkKmgAHPT0migy9DaYtnkTbIIQ==}
+    peerDependencies:
+      '@sinclair/typebox': ^0.25.9
+      fastify: ^4.0.0
+    dependencies:
+      '@sinclair/typebox': 0.25.20
+      fastify: 4.12.0
     dev: false
 
   /@gar/promisify/1.1.3:
@@ -1853,6 +1867,10 @@ packages:
     resolution: {integrity: sha512-1P1OROm/rdubP5aFDSZQILU0vrLCJ4fvHt6EoqHEM+2D/G5MK3bIaymUKLit8Js9gbns5UyJnkP/TZROLw4tUA==}
     dev: true
 
+  /@sinclair/typebox/0.25.20:
+    resolution: {integrity: sha512-7cPrp+XyulftbrBIH0MjUvrn0cFgLe/Tpqi8WPE+iigBiyKCItWKWfY743OI4nLcNbZkz9t0u8Tb3r2t5csE9Q==}
+    dev: false
+
   /@sinonjs/commons/1.8.6:
     resolution: {integrity: sha512-Ky+XkAkqPZSm3NLBeUng77EBQl3cmeJhITaGHdYH8kjVB+aun3S4XBRti2zt17mtt0mIUDiNxYeoJm6drVvBJQ==}
     dependencies:
@@ -2211,17 +2229,6 @@ packages:
 
   /ajv-formats/2.1.1:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
-    peerDependenciesMeta:
-      ajv:
-        optional: true
-    dependencies:
-      ajv: 8.12.0
-    dev: false
-
-  /ajv-formats/2.1.1_ajv@8.12.0:
-    resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
-    peerDependencies:
-      ajv: ^8.0.0
     peerDependenciesMeta:
       ajv:
         optional: true
@@ -3731,7 +3738,7 @@ packages:
     dependencies:
       '@fastify/deepmerge': 1.3.0
       ajv: 8.12.0
-      ajv-formats: 2.1.1_ajv@8.12.0
+      ajv-formats: 2.1.1
       fast-deep-equal: 3.1.3
       fast-uri: 2.2.0
       rfdc: 1.3.0

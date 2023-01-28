@@ -1,8 +1,8 @@
 import { it, describe, beforeEach, expect } from '@jest/globals'
 import { faker } from '@faker-js/faker'
 
-import { prisma } from '../db'
-import { Topic } from '../topic/interfaces'
+import { prisma } from '@/db'
+import { Topic } from '@/topic'
 
 import { EventService } from './event.service'
 import { Event } from './interfaces'

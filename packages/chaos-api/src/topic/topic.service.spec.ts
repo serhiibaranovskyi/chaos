@@ -1,10 +1,10 @@
 import { it, describe, beforeEach, expect } from '@jest/globals'
 import { faker } from '@faker-js/faker'
 
-import { prisma } from '../db'
+import { prisma } from '@/db'
 
 import { TopicService } from './topic.service'
-import type { Topic } from './interfaces'
+import type { Topic } from './topic.interface'
 
 const MOCKED_TOPICS = faker.datatype.array(3).map(() => ({
   title: faker.lorem.words(2),
