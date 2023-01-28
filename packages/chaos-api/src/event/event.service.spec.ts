@@ -6,36 +6,40 @@ import { Topic } from '../topic/interfaces'
 
 import { EventService } from './event.service'
 import { Event } from './interfaces'
-
-const MOCKED_TOPICS = faker.datatype.array(3).map(() => ({
-  title: faker.lorem.words(2),
-  description: faker.lorem.paragraph(),
-}))
+import { CreateEventDto } from './dto'
 
 describe('EventService', () => {
   let eventService: EventService
   let firstTopic: Topic
   let firstEvent: Event
-  const eventDto = {
-    title: 'Mocked title',
-    description: 'Mocked description',
-  }
+  let mockedEventDto: CreateEventDto
 
   beforeEach(async () => {
+    mockedEventDto = {
+      title: faker.lorem.words(2),
+      description: faker.lorem.words(2),
+    }
     eventService = new EventService(prisma)
-    await prisma.topic.createMany({ data: MOCKED_TOPICS })
-    firstTopic = (await prisma.topic.findFirst()) as Topic
-    firstEvent = await prisma.event.create({
+    firstTopic = await prisma.topic.create({
       data: {
-        topic: {
-          connect: { id: firstTopic.id },
-        },
-        payload: eventDto,
+        title: 'Mocked topic title',
+        description: 'Mocker topic description',
       },
     })
+    await prisma.event.createMany({
+      data: {
+        topicId: firstTopic.id,
+        payload: mockedEventDto,
+      },
+    })
+    firstEvent = (await prisma.event.findFirst()) as Event
   })
 
   it('Should create a new event', async () => {
+    const eventDto = {
+      title: 'Mocked title',
+      description: 'Mocked description',
+    }
     const event = await eventService.create(firstTopic.id, eventDto)
     expect(event).toMatchObject({
       payload: eventDto,
