@@ -5,14 +5,13 @@ import { prisma } from '@/db'
 import { Topic } from '@/topic'
 
 import { EventService } from './event.service'
-import { Event } from './interfaces'
-import { CreateEventDto } from './dto'
+import { Event } from './event.interface'
 
 describe('EventService', () => {
   let eventService: EventService
   let firstTopic: Topic
   let firstEvent: Event
-  let mockedEventDto: CreateEventDto
+  let mockedEventDto: Record<string, string>
 
   beforeEach(async () => {
     mockedEventDto = {
