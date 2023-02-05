@@ -8,7 +8,7 @@ export const CreateEventPayloadSchema = Type.Record(
 )
 
 export const EventSchema = Type.Object({
-  id: Type.Date(),
+  id: Type.Number(),
   createdAt: Type.Date(),
   payload: CreateEventPayloadSchema,
   topicId: Type.Number(),
