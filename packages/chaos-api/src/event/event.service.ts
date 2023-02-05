@@ -2,8 +2,8 @@ import type { PrismaClient } from '@prisma/client'
 
 import { withPrismaErrorHook } from '@/shared/prisma'
 
-import { CreateEventPayloadDto } from './event.dto'
-import { Event } from './event.interface'
+import type { CreateEventPayloadDto } from './event.dto'
+import type { Event } from './event.interface'
 
 export class EventService {
   private db: PrismaClient
@@ -34,6 +34,6 @@ export class EventService {
 
   @withPrismaErrorHook()
   public async delete(id: number) {
-    return await this.db.event.delete({ where: { id } })
+    await this.db.event.delete({ where: { id } })
   }
 }
