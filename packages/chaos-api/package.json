@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "pnpm run dev:docker:up",
+    "dev:server": "ts-node -P tsconfig.json src/server.ts",
     "dev:db:migrate": "prisma migrate dev",
     "dev:docker:stop": "docker compose -f ./docker/docker-compose.dev.yml -p chaos-api stop",
     "dev:docker:up": "docker compose -f ./docker/docker-compose.dev.yml -p chaos-api up -d",
