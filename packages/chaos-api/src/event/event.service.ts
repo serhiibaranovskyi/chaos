@@ -1,7 +1,9 @@
 import type { PrismaClient } from '@prisma/client'
 
-import { CreateEventDto } from './dto'
-import { Event } from './interfaces'
+import { withPrismaErrorHook } from '@/shared/prisma'
+
+import type { CreateEventPayloadDto } from './event.dto'
+import type { Event } from './event.interface'
 
 export class EventService {
   private db: PrismaClient
@@ -9,7 +11,12 @@ export class EventService {
   public constructor(prisma: PrismaClient) {
     this.db = prisma
   }
-  public create(topicId: number, payload: CreateEventDto): Promise<Event> {
+
+  @withPrismaErrorHook()
+  public create(
+    topicId: number,
+    payload: CreateEventPayloadDto
+  ): Promise<Event> {
     return this.db.event.create({
       data: {
         topic: {
@@ -20,11 +27,13 @@ export class EventService {
     })
   }
 
+  @withPrismaErrorHook()
   public findById(id: number): Promise<Event | null> {
     return this.db.event.findUnique({ where: { id } })
   }
 
+  @withPrismaErrorHook()
   public async delete(id: number) {
-    return await this.db.event.delete({ where: { id } })
+    await this.db.event.delete({ where: { id } })
   }
 }
