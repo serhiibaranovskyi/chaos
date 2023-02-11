@@ -16,7 +16,7 @@ export async function createEvent(
     request.body.topicId,
     request.body.payload
   )
-  return makeResponse(event)
+  return makeResponse(event) as EventResponseDto
 }
 
 export async function findEventById(
@@ -28,7 +28,7 @@ export async function findEventById(
   if (event === null) {
     return reply.status(404).send(makeEmptyResponse({ ok: false }))
   }
-  return makeResponse(event)
+  return makeResponse(event) as EventResponseDto
 }
 
 export async function deleteEvent(
