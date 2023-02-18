@@ -15,7 +15,6 @@ module.exports = {
     'plugin:import/typescript',
     'plugin:prettier/recommended',
   ],
-  ignorePatterns: ['.eslintrc.js'],
   rules: {
     'no-var': 'error',
     'prefer-const': 'error',
