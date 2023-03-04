@@ -1,0 +1,19 @@
+FROM node:18
+
+ENV PORT=''
+
+WORKDIR /usr/src/app
+
+COPY . .
+
+RUN npm install -g pnpm &&\
+  pnpm install
+
+WORKDIR /usr/src/app/packages/chaos-api
+
+RUN npx prisma generate
+
+EXPOSE $PORT
+
+CMD ["pnpm", "run", "dev:server"]
+

@@ -1,15 +1,33 @@
+import * as process from 'process'
+
 import { fastify, FastifyInstance } from 'fastify'
 
-export const server: FastifyInstance = fastify({
+import { prisma } from '@/db'
+import { registerTopicRoutes } from '@/topic/topic.route-v1'
+import { TopicService } from '@/topic'
+import { EventService } from '@/event'
+import { registerEventRoutes } from '@/event/event.route-v1'
+
+const server: FastifyInstance = fastify({
   logger: true,
 })
 
-import { createTopic } from '@/topic/topic.route.v1'
+server.decorate('services', {
+  topic: new TopicService(prisma),
+  event: new EventService(prisma),
+})
 
-server.register(createTopic, { prefix: '/v1' })
+server.register(registerTopicRoutes, { prefix: '/v1/topics' })
+server.register(registerEventRoutes, { prefix: '/v1/events' })
 
-server.listen({ port: 8080 }, (err: Error | null) => {
-  if (err) {
+const start = async () => {
+  try {
+    await server.listen({
+      port: +(process.env.PORT || 3001),
+      host: process.env.HOST,
+    })
+  } catch (err) {
     server.log.error(err)
   }
-})
+}
+start()
