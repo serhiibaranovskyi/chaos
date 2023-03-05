@@ -9,7 +9,11 @@ import { EventService } from '@/event'
 import { registerEventRoutes } from '@/event/event.route-v1'
 
 const server: FastifyInstance = fastify({
-  logger: true,
+  logger: {
+    transport: {
+      target: 'pino-pretty',
+    },
+  },
 })
 
 server.decorate('services', {
