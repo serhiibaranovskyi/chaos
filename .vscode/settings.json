@@ -1,0 +1,6 @@
+{
+  "eslint.packageManager": "pnpm",
+  "eslint.workingDirectories": [{ "pattern": "packages/*/" }],
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.tsdk": "node_modules/.pnpm/typescript@4.9.5/node_modules/typescript/lib"
+}
