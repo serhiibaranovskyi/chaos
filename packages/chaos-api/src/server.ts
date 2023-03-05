@@ -34,4 +34,7 @@ const start = async () => {
     server.log.error(err)
   }
 }
-start()
+
+if (require.main === module) {
+  start()
+}
