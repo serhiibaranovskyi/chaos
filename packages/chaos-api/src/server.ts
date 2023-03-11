@@ -3,9 +3,9 @@ import * as process from 'process'
 import { fastify, FastifyInstance } from 'fastify'
 
 import { prisma } from '@/db'
-import { registerTopicRoutes } from '@/topic/topic.route-v1'
 import { TopicService } from '@/topic'
 import { EventService } from '@/event'
+import { registerTopicRoutes } from '@/topic/topic.route-v1'
 import { registerEventRoutes } from '@/event/event.route-v1'
 
 const server: FastifyInstance = fastify({
