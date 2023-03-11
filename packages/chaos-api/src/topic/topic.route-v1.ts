@@ -6,6 +6,7 @@ import {
 
 import {
   CreateTopicSchema,
+  SearchTopicsSchema,
   TopicIdSchema,
   UpdateTopicSchema,
 } from './topic.dto'
@@ -52,6 +53,15 @@ export function registerTopicRoutes(
       },
     },
     topicController.deleteTopic
+  )
+  fastify.get(
+    '/',
+    {
+      schema: {
+        querystring: SearchTopicsSchema,
+      },
+    },
+    topicController.searchTopic
   )
   done()
 }

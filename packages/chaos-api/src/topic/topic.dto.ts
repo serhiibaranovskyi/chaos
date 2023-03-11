@@ -14,7 +14,11 @@ export const TopicSchema = Type.Object({
   updatedAt: Type.Date(),
 })
 
+export const TopicListSchema = Type.Array(TopicSchema)
+
 export const TopicResponseSchema = makeResponseSchema(TopicSchema)
+
+export const TopicListResponseSchema = makeResponseSchema(TopicListSchema)
 
 export const CreateTopicSchema = Type.Object({
   description: Type.String({ minLength: 16 }),
@@ -26,12 +30,20 @@ export const UpdateTopicSchema = Type.Object({
   title: Type.String({ minLength: 5 }),
 })
 
+export const SearchTopicsSchema = Type.Object({
+  searchTerm: Type.Optional(Type.String()),
+})
+
 export type TopicIdDto = Static<typeof TopicIdSchema>
 
 export type TopicDto = Static<typeof TopicSchema>
 
 export type TopicResponseDto = Static<typeof TopicResponseSchema>
 
+export type TopicListResponseDto = Static<typeof TopicListResponseSchema>
+
 export type CreateTopicDto = Static<typeof CreateTopicSchema>
 
 export type UpdateTopicDto = Static<typeof UpdateTopicSchema>
+
+export type SearchTopicsDto = Static<typeof SearchTopicsSchema>

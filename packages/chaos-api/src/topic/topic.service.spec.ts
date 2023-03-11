@@ -46,4 +46,21 @@ describe('TopicService', () => {
     const topic = await topicService.findById(firstTopic.id)
     expect(topic).toBeNull()
   })
+
+  it('Should search topics', async () => {
+    const mockedTopics = [
+      {
+        title: 'Test title',
+        description: 'Test term description',
+      },
+      {
+        title: 'Test term title',
+        description: 'Something',
+      },
+    ]
+    await prisma.topic.createMany({ data: mockedTopics })
+    const searchTerm = 'test term'
+    const topics = await topicService.search(searchTerm)
+    expect(topics).toHaveLength(2)
+  })
 })

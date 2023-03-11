@@ -5,6 +5,8 @@ import { withPrismaErrorHook } from '@/shared/prisma'
 import type { CreateTopicDto, UpdateTopicDto } from './topic.dto'
 import type { Topic } from './topic.interface'
 
+const WORDS_REGEX = /[\s\t\n]+/
+
 export class TopicService {
   private db: PrismaClient
 
@@ -33,5 +35,22 @@ export class TopicService {
   @withPrismaErrorHook()
   public async delete(id: number) {
     await this.db.topic.delete({ where: { id } })
+  }
+
+  @withPrismaErrorHook()
+  public async search(searchTerm?: string): Promise<Topic[]> {
+    if (!searchTerm) {
+      return this.db.topic.findMany()
+    }
+    return this.db.topic.findMany({
+      where: {
+        title: {
+          search: searchTerm.split(WORDS_REGEX).join(' & '),
+        },
+        description: {
+          search: searchTerm.split(WORDS_REGEX).join(' & '),
+        },
+      },
+    })
   }
 }

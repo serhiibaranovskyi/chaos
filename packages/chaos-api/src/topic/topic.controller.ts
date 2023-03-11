@@ -11,6 +11,8 @@ import type {
   TopicIdDto,
   TopicResponseDto,
   UpdateTopicDto,
+  SearchTopicsDto,
+  TopicListResponseDto,
 } from './topic.dto'
 
 export async function createTopic(
@@ -50,4 +52,12 @@ export async function deleteTopic(
 ): Promise<EmptyResponseDto> {
   await this.services.topic.delete(request.params.id)
   return makeResponse(null)
+}
+
+export async function searchTopic(
+  this: FastifyInstance,
+  request: FastifyRequest<{ Querystring: SearchTopicsDto }>
+): Promise<TopicListResponseDto> {
+  const topics = await this.services.topic.search(request.query.searchTerm)
+  return makeResponse(topics)
 }
