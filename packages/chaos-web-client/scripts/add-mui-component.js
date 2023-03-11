@@ -45,13 +45,13 @@ async function addMuiComponent(component) {
 
   const outDir = path.join(
     __dirname,
-    `../src/components/ui/${paramCase(component)}`
+    `../src/shared/components/${paramCase(component)}`
   )
   if (fs.existsSync(outDir)) {
     console.error(
       `\x1b[31m[Skipping] The component "${paramCase(
         component
-      )}" already exists in @/components/ui\x1b[0m`
+      )}" already exists in @/shared/components\x1b[0m`
     )
     return false
   }

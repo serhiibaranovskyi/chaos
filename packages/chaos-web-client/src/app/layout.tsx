@@ -1,10 +1,13 @@
+'use client'
 import React from 'react'
 import { Roboto } from '@next/font/google'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
-import { AppBar } from '@/components/common/app-bar'
-import { Container } from '@/components/ui/container'
-import { CssBaseline } from '@/components/ui/css-baseline'
+import { AppBar } from '@/feature/app-bar'
+import { Container } from '@/shared/components/container'
+import { CssBaseline } from '@/shared/components/css-baseline'
 
+import { CreateTopicAction } from './create-topic-action'
 import { Providers } from './providers'
 
 const roboto = Roboto({
@@ -14,6 +17,7 @@ const roboto = Roboto({
 
 function RootLayout(props: React.PropsWithChildren) {
   const { children } = props
+
   return (
     <html lang="en" className={roboto.className}>
       <head />
@@ -21,7 +25,11 @@ function RootLayout(props: React.PropsWithChildren) {
         <Providers>
           <CssBaseline />
           <AppBar />
-          <Container sx={{ flex: '1', py: 2 }}>{children}</Container>
+          <Container maxWidth={false} sx={{ flex: '1' }}>
+            {children}
+            <CreateTopicAction />
+          </Container>
+          <ReactQueryDevtools initialIsOpen={false} />
         </Providers>
       </body>
     </html>

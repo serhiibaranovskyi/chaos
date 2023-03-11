@@ -8,6 +8,7 @@ import {
   deleteTopic,
   fetchTopic,
   searchTopics,
+  SearchTopicsDto,
   Topic,
   updateTopic,
   UpdateTopicDto,
@@ -20,12 +21,15 @@ import {
   UseQueryOptions,
 } from './common'
 
-export function getTopicsQK() {
-  return ['topics'] as const
+export const TOPIC_MAPPING_BASE_QK = ['topics'] as const
+export const TOPIC_COLLECTIONS_BASE_QK = ['topic-collections'] as const
+
+export function getTopicsSearchQK(payload: SearchTopicsDto) {
+  return [...TOPIC_COLLECTIONS_BASE_QK, 'search', payload] as const
 }
 
 export function getTopicQK(id: EntityId) {
-  return ['topics', id] as const
+  return [...TOPIC_MAPPING_BASE_QK, id] as const
 }
 
 export function useCreateTopic<TError = unknown>(
@@ -38,6 +42,7 @@ export function useCreateTopic<TError = unknown>(
     onSuccess: (response, payload, context) => {
       options?.onSuccess?.(response, payload, context)
       queryClient.setQueryData(getTopicQK(response.data.id), response.data)
+      queryClient.invalidateQueries({ queryKey: TOPIC_COLLECTIONS_BASE_QK })
     },
   })
 }
@@ -54,11 +59,12 @@ export function useTopic<TError = unknown>(
 }
 
 export function useTopicsSearch<TError = unknown>(
+  payload: SearchTopicsDto,
   options: UseQueryOptions<ChaosResponse<Topic[]>, TError> = {}
 ) {
   return useQuery({
-    queryKey: getTopicsQK(),
-    queryFn: () => searchTopics(),
+    queryKey: getTopicsSearchQK(payload),
+    queryFn: () => searchTopics(payload),
     ...options,
   })
 }
@@ -73,12 +79,13 @@ export function useUpdateTopic<TError = unknown>(
     onSuccess: (response, payload, context) => {
       options?.onSuccess?.(response, payload, context)
       queryClient.setQueryData(getTopicQK(response.data.id), response.data)
+      queryClient.invalidateQueries({ queryKey: TOPIC_COLLECTIONS_BASE_QK })
     },
   })
 }
 
 export function useDeleteTopic<TError = unknown>(
-  options: UseMutationOptions<ChaosResponse<Topic>, TError, EntityId> = {}
+  options: UseMutationOptions<ChaosResponse<null>, TError, EntityId> = {}
 ) {
   const queryClient = useQueryClient()
   return useMutation({
@@ -86,7 +93,8 @@ export function useDeleteTopic<TError = unknown>(
     ...options,
     onSuccess: (response, payload, context) => {
       options?.onSuccess?.(response, payload, context)
-      queryClient.setQueryData(getTopicQK(response.data.id), null)
+      queryClient.setQueryData(getTopicQK(payload), null)
+      queryClient.invalidateQueries({ queryKey: TOPIC_COLLECTIONS_BASE_QK })
     },
   })
 }

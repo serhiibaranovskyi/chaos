@@ -8,9 +8,9 @@ module.exports = {
       {
         patterns: [
           {
-            group: ['@mui/material', '@mui/material/*'],
+            group: ['@mui/material', '@mui/material/*', '@mui/icons-material'],
             message:
-              "Please use import from 'components/ui/*' or 'styles/*' instead",
+              "Please use import from '@/shared/components/*' or '@/shared/styles/*' instead",
           },
         ],
       },
@@ -25,10 +25,10 @@ module.exports = {
     },
     {
       files: [
-        'src/components/ui/**',
-        'src/styles/**',
-        'components/ui/**',
-        'styles/**',
+        'src/shared/components/**',
+        'src/shared/styles/**',
+        'shared/components/**',
+        'shared/styles/**',
       ],
       rules: {
         'no-restricted-imports': [

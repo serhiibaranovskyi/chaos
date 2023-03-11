@@ -1,5 +1,5 @@
 import type { EntityId } from '@/api/core/common/types'
-import { CHAOS_BASE_URL } from '@/config'
+import { CHAOS_BASE_URL } from '@/shared/config'
 
 function mkUrl<TBase extends string, TPath extends string>(
   base: TBase,

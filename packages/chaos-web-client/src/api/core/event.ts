@@ -4,10 +4,10 @@ export type ChaosEventPayload = Record<string, string | number | boolean | null>
 
 export type ChaosEvent = {
   id: number
-  createdAt: number
+  createdAt: string
   payload: ChaosEventPayload
   topicId: number
-  updatedAt: number
+  updatedAt: string
 }
 
 export type CreateEventDto = {
@@ -27,7 +27,7 @@ export function fetchEvent(id: EntityId) {
 }
 
 export function deleteEvent(id: EntityId) {
-  return request<ChaosEvent>(mkEventUrl(id), {
+  return request<null>(mkEventUrl(id), {
     method: 'DELETE',
   })
 }

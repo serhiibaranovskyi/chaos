@@ -17,12 +17,15 @@ import {
   UseQueryOptions,
 } from './common'
 
+export const EVENT_MAPPING_BASE_QK = ['event'] as const
+export const EVENT_COLLECTIONS_BASE_QK = ['event-collections'] as const
+
 export function getEventsQK() {
-  return ['topics'] as const
+  return [...EVENT_COLLECTIONS_BASE_QK, 'all'] as const
 }
 
 export function getEventQK(id: EntityId) {
-  return ['topics', id] as const
+  return [...EVENT_MAPPING_BASE_QK, id] as const
 }
 
 export function useCreateEvent<TError = unknown>(
@@ -39,6 +42,7 @@ export function useCreateEvent<TError = unknown>(
     onSuccess: (response, payload, context) => {
       options?.onSuccess?.(response, payload, context)
       queryClient.setQueryData(getEventQK(response.data.id), response.data)
+      queryClient.invalidateQueries({ queryKey: EVENT_COLLECTIONS_BASE_QK })
     },
   })
 }
@@ -55,7 +59,7 @@ export function useEvent<TError = unknown>(
 }
 
 export function useDeleteEvent<TError = unknown>(
-  options: UseMutationOptions<ChaosResponse<ChaosEvent>, TError, EntityId> = {}
+  options: UseMutationOptions<ChaosResponse<null>, TError, EntityId> = {}
 ) {
   const queryClient = useQueryClient()
   return useMutation({
@@ -63,7 +67,8 @@ export function useDeleteEvent<TError = unknown>(
     ...options,
     onSuccess: (response, payload, context) => {
       options?.onSuccess?.(response, payload, context)
-      queryClient.setQueryData(getEventQK(response.data.id), null)
+      queryClient.setQueryData(getEventQK(payload), null)
+      queryClient.invalidateQueries({ queryKey: EVENT_COLLECTIONS_BASE_QK })
     },
   })
 }

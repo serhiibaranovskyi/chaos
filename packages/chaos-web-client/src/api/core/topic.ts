@@ -1,16 +1,22 @@
+import qs from 'query-string'
+
 import { EntityId, mkTopicsUrl, mkTopicUrl, request } from './common'
 
 export type Topic = {
   id: number
-  createdAt: number
+  createdAt: string
   description: string
   title: string
-  updatedAt: number
+  updatedAt: string
 }
 
 export type CreateTopicDto = {
   description: string
   title: string
+}
+
+export type SearchTopicsDto = {
+  term?: string
 }
 
 export type UpdateTopicDto = {
@@ -32,8 +38,8 @@ export function fetchTopic(id: EntityId) {
   return request<Topic>(mkTopicUrl(id))
 }
 
-export function searchTopics() {
-  return request<Topic[]>(mkTopicsUrl())
+export function searchTopics(payload: SearchTopicsDto = {}) {
+  return request<Topic[]>(`${mkTopicsUrl()}?${qs.stringify(payload)}`)
 }
 
 export function updateTopic(payload: UpdateTopicDto) {
@@ -44,7 +50,7 @@ export function updateTopic(payload: UpdateTopicDto) {
 }
 
 export function deleteTopic(id: EntityId) {
-  return request<Topic>(mkTopicUrl(id), {
+  return request<null>(mkTopicUrl(id), {
     method: 'DELETE',
   })
 }
