@@ -1,6 +1,22 @@
 version: "3.8"
 
 services:
+  api:
+    build:
+      context: ../../..
+      dockerfile: packages/chaos-api/docker/Dockerfile-dev
+    container_name: "chaos-api"
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: "postgresql://chaos:chaos@chaos-postgres:5432/chaos"
+    env_file:
+      - ../.env
+    volumes:
+      - ../src:/usr/src/app/packages/chaos-api/src
   db:
     image: "postgres"
     container_name: "chaos-postgres"
@@ -14,7 +30,6 @@ services:
       - db:/data/postgres
     ports:
       - "5432:5432"
-
 volumes:
   db:
     driver: local

@@ -1,8 +1,12 @@
 {
   "extends": "../../tsconfig.json",
+  "ts-node": {
+    "files": true
+  },
+  "files": ["src/shared/defs/fastify.d.ts"],
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "."
   },
   "include": ["src"],
-  "exclude": ["node_modules", "dist"],
+  "exclude": ["node_modules", "dist"]
 }
