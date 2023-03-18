@@ -31,7 +31,7 @@ export const UpdateTopicSchema = Type.Object({
 })
 
 export const SearchTopicsSchema = Type.Object({
-  searchTerm: Type.Optional(Type.String()),
+  term: Type.Optional(Type.String()),
 })
 
 export type TopicIdDto = Static<typeof TopicIdSchema>

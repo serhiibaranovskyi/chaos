@@ -25,6 +25,7 @@ export function CreateTopicAction() {
         <AddIcon />
       </Fab>
       <CreateTopicDialog
+        key={`${isCreateTopicDialogOpen}`}
         inProgress={createTopicMutation.isLoading}
         onClose={toggleCreateTopicDialog}
         onCreate={createTopicMutation.mutate}

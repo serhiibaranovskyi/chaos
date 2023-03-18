@@ -45,7 +45,7 @@ export function searchTopics(payload: SearchTopicsDto = {}) {
 export function updateTopic(payload: UpdateTopicDto) {
   return request<Topic>(mkTopicUrl(payload.id), {
     body: JSON.stringify(payload.data),
-    method: 'PATCH',
+    method: 'PUT',
   })
 }
 

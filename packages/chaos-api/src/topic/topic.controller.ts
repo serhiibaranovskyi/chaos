@@ -1,4 +1,4 @@
-import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
+import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 
 import {
   EmptyResponseDto,
@@ -8,11 +8,11 @@ import {
 
 import type {
   CreateTopicDto,
+  SearchTopicsDto,
   TopicIdDto,
+  TopicListResponseDto,
   TopicResponseDto,
   UpdateTopicDto,
-  SearchTopicsDto,
-  TopicListResponseDto,
 } from './topic.dto'
 
 export async function createTopic(
@@ -58,6 +58,6 @@ export async function searchTopic(
   this: FastifyInstance,
   request: FastifyRequest<{ Querystring: SearchTopicsDto }>
 ): Promise<TopicListResponseDto> {
-  const topics = await this.services.topic.search(request.query.searchTerm)
+  const topics = await this.services.topic.search(request.query.term)
   return makeResponse(topics)
 }

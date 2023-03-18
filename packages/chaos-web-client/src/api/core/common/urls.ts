@@ -9,7 +9,7 @@ function mkUrl<TBase extends string, TPath extends string>(
 }
 
 function mkApiV1Url<TPath extends string>(path: TPath) {
-  return mkUrl(CHAOS_BASE_URL as '<CHAOS_BASE_URL>', path)
+  return mkUrl(`${CHAOS_BASE_URL}/v1` as '<CHAOS_BASE_URL>/api/v1', path)
 }
 
 /*

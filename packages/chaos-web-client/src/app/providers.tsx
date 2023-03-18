@@ -6,8 +6,15 @@ import { SnackbarProvider } from 'notistack'
 
 import { theme, ThemeProvider } from '@/shared/styles'
 import { TopicActionsProvider } from '@/shared/context/topic-actions'
+import { CHAOS_BASE_URL, USE_MOCKS } from '@/shared/config'
 
-import '@/mocks/handlers'
+if (USE_MOCKS) {
+  require('@/mocks/handlers')
+}
+
+if (!CHAOS_BASE_URL) {
+  throw new Error('CHAOS_BASE_URL is not provided')
+}
 
 export function Providers(props: React.PropsWithChildren) {
   const { children } = props
@@ -15,7 +22,10 @@ export function Providers(props: React.PropsWithChildren) {
 
   return (
     <ThemeProvider theme={theme}>
-      <SnackbarProvider maxSnack={3}>
+      <SnackbarProvider
+        anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+        maxSnack={3}
+      >
         <QueryClientProvider client={queryClient}>
           <TopicActionsProvider>{children}</TopicActionsProvider>
         </QueryClientProvider>

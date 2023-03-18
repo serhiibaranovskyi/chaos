@@ -10,6 +10,8 @@
   },
   "scripts": {
     "build": "lerna run build",
+    "dev:api": "pnpm -C packages/chaos-api run dev",
+    "dev:client": "pnpm -C packages/chaos-web-client run dev",
     "format": "lerna run format",
     "lint": "lerna run lint",
     "prepare": "husky install",

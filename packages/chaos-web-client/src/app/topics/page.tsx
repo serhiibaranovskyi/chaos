@@ -13,11 +13,19 @@ import {
   useUpdateTopic,
 } from '@/api/react-query/topic'
 
+const SEARCH_TERM_MIN_LENGTH = 4
+
 function TopicsDashboardPage() {
   const { enqueueSnackbar } = useSnackbar()
   const { searchTerm } = useTopicActionsContext()
   const deferredSearchTerm = useDeferredValue(searchTerm)
-  const { isLoading, response } = useTopicsSearch({ term: deferredSearchTerm })
+  const waitForUserInput =
+    deferredSearchTerm.length >= 1 &&
+    deferredSearchTerm.length <= SEARCH_TERM_MIN_LENGTH
+  const { isLoading, response } = useTopicsSearch(
+    { term: deferredSearchTerm },
+    { enabled: !waitForUserInput }
+  )
 
   const [topicToEdit, setTopicToEdit] = useState<Topic | null>(null)
   const updateTopicMutation = useUpdateTopic({
@@ -39,7 +47,7 @@ function TopicsDashboardPage() {
 
   return (
     <main>
-      {isLoading ? (
+      {isLoading || waitForUserInput ? (
         <PageLoader />
       ) : (
         <TopicGrid
