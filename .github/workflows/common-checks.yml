@@ -47,6 +47,3 @@ jobs:
 
       - name: Check Types
         run: pnpm run test:types
-# todo: setup env
-#      - name: Run tests
-#        run: pnpm run test
