@@ -8,6 +8,7 @@ import { registerTopicRoutes } from '@/topic/topic.route-v1'
 import { registerEventRoutes } from '@/event/event.route-v1'
 import { LOGGER_CONFIG } from '@/logger'
 import { ENV, SERVER_HOST, SERVER_PORT } from '@/config'
+import { createChan } from '@/shared/message-broker'
 
 const server: FastifyInstance = fastify({
   logger: LOGGER_CONFIG[ENV] ?? true,
@@ -34,6 +35,27 @@ const start = async () => {
   }
 }
 
+// todo: remove message-broker sample
+async function consume() {
+  const chan = await createChan()
+  await chan.assertQueue('topics')
+  server.log.info({ message: 'MESSAGE BROKER IS ACTIVE' })
+
+  await chan.consume('topics', (msg) => {
+    if (!msg) {
+      return
+    }
+
+    const createdTopic = JSON.parse(msg?.content?.toString())
+    server.log.info({
+      message: 'New Topic Created',
+      topic: createdTopic,
+    })
+    chan.ack(msg)
+  })
+}
+
 if (require.main === module) {
   start()
+  consume()
 }

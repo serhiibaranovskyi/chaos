@@ -11,12 +11,12 @@ services:
       - "8081:8081"
     depends_on:
       - db
-    environment:
-      DATABASE_URL: "postgresql://chaos:chaos@chaos-postgres:5432/chaos"
+      - rabbitmq
     env_file:
       - ../.env
     volumes:
       - ../src:/usr/src/app/packages/chaos-api/src
+
   db:
     image: "postgres"
     container_name: "chaos-postgres"
@@ -30,6 +30,22 @@ services:
       - db:/data/postgres
     ports:
       - "5432:5432"
+
+  rabbitmq:
+    image: "rabbitmq:management"
+    container_name: "chaos-rabbitmq"
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+      - rabbitmq-log:/var/log/rabbitmq
+
 volumes:
   db:
+    driver: local
+  rabbitmq-data:
+    driver: local
+  rabbitmq-log:
     driver: local

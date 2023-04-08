@@ -39,6 +39,7 @@ done
 if [[ "$env" == "dev" ]]; then
   cat > "$output_path" <<EOL
 DATABASE_URL="postgresql://chaos:chaos@chaos-postgres:5432/chaos"
+MESSAGE_BROKER_URL="amqp://chaos-rabbitmq:5672"
 EOL
 elif [[ "$env" == "test" ]]; then
   cat > "$output_path" <<EOL

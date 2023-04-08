@@ -1,5 +1,6 @@
 import type { PrismaClient } from '@prisma/client'
 
+import { createChan } from '@/shared/message-broker'
 import { withPrismaErrorHook } from '@/shared/prisma'
 
 import type { CreateTopicDto, UpdateTopicDto } from './topic.dto'
@@ -15,8 +16,13 @@ export class TopicService {
   }
 
   @withPrismaErrorHook()
-  public create(data: CreateTopicDto): Promise<Topic> {
-    return this.db.topic.create({ data })
+  public async create(data: CreateTopicDto): Promise<Topic> {
+    // todo: remove message-broker sample
+    const topic = await this.db.topic.create({ data })
+    const chan = await createChan()
+    await chan.assertQueue('topics')
+    chan.sendToQueue('topics', Buffer.from(JSON.stringify(topic)))
+    return topic
   }
 
   @withPrismaErrorHook()
