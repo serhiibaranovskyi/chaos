@@ -16,10 +16,12 @@
     "@emotion/styled": "^11.10.6",
     "@faker-js/faker": "^7.6.0",
     "@hookform/resolvers": "^2.9.11",
+    "@loadable/component": "^5.15.3",
     "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.13",
     "@tanstack/react-query": "^4.27.0",
     "@tanstack/react-query-devtools": "^4.27.0",
+    "@types/react-json-editor-ajrm": "^2.5.3",
     "date-fns": "^2.29.3",
     "eslint": "^8.36.0",
     "eslint-config-next": "13.2.4",
@@ -31,17 +33,21 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.7",
+    "react-json-editor-ajrm": "^2.5.14",
+    "react-json-view": "^1.21.3",
     "react-use": "^17.4.0",
     "typescript": "^5.0.2",
     "yup": "^1.0.2"
   },
   "devDependencies": {
+    "@types/loadable__component": "^5.13.4",
     "@types/lodash": "^4.14.191",
     "@types/node": "^18.15.3",
     "@types/query-string": "^6.3.0",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
-    "change-case": "^4.1.2"
+    "change-case": "^4.1.2",
+    "type-fest": "^3.8.0"
   },
   "msw": {
     "workerDirectory": "public"

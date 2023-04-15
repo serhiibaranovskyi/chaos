@@ -1,36 +1,47 @@
-import { it, describe, beforeEach, expect } from '@jest/globals'
+import { beforeEach, describe, expect, it } from '@jest/globals'
 import { faker } from '@faker-js/faker'
 
 import { prisma } from '@/db'
-import { Topic } from '@/topic'
+import type { Topic } from '@/topic'
 
 import { EventService } from './event.service'
-import { Event } from './event.interface'
+import type { Event } from './event.interface'
+
+const TOPICS_COUNT = 2
+const TOPIC_EVENTS_COUNT = 2
+
+function generateTopicMocks(count: number) {
+  return faker.datatype.array(count).map(() => ({
+    title: faker.lorem.words(2),
+    description: faker.lorem.paragraph(),
+  }))
+}
+
+function generateEventMocks(count: number) {
+  return faker.datatype.array(count).map(() => ({
+    title: faker.lorem.words(2),
+    description: faker.lorem.words(2),
+  }))
+}
 
 describe('EventService', () => {
   let eventService: EventService
   let firstTopic: Topic
   let firstEvent: Event
-  let mockedEventDto: Record<string, string>
 
   beforeEach(async () => {
-    mockedEventDto = {
-      title: faker.lorem.words(2),
-      description: faker.lorem.words(2),
-    }
     eventService = new EventService(prisma)
-    firstTopic = await prisma.topic.create({
-      data: {
-        title: 'Mocked topic title',
-        description: 'Mocker topic description',
-      },
-    })
+    await prisma.topic.createMany({ data: generateTopicMocks(TOPICS_COUNT) })
+    const allTopics = await prisma.topic.findMany()
     await prisma.event.createMany({
-      data: {
-        topicId: firstTopic.id,
-        payload: mockedEventDto,
-      },
+      data: allTopics.flatMap((topic) =>
+        generateEventMocks(TOPIC_EVENTS_COUNT).map((event) => ({
+          payload: event,
+          topicId: topic.id,
+        }))
+      ),
     })
+    firstTopic = allTopics[0] as Topic
     firstEvent = (await prisma.event.findFirst()) as Event
   })
 
@@ -46,13 +57,21 @@ describe('EventService', () => {
   })
 
   it('Should find a event by id', async () => {
-    const foundedEvent = await eventService.findById(firstEvent.id)
-    expect(foundedEvent).toMatchObject(firstEvent)
+    const event = await eventService.findById(firstEvent.id)
+    expect(event).toMatchObject(firstEvent)
+  })
+
+  it('Should find events by topicId', async () => {
+    const events = await eventService.findByTopicId(firstTopic.id)
+    expect(events).toHaveLength(TOPIC_EVENTS_COUNT)
+    for (const event of events) {
+      expect(event.topicId).toBe(firstTopic.id)
+    }
   })
 
   it('Should delete a event', async () => {
     await eventService.delete(firstEvent.id)
-    const foundedEvent = await eventService.findById(firstEvent.id)
-    expect(foundedEvent).toBeNull()
+    const event = await eventService.findById(firstEvent.id)
+    expect(event).toBeNull()
   })
 })

@@ -4,10 +4,12 @@ import { useQueryClient } from '@tanstack/react-query'
 import type { ChaosResponse, EntityId } from '@/api/core/common'
 import {
   ChaosEvent,
-  createEvent,
-  CreateEventDto,
-  deleteEvent,
-  fetchEvent,
+  createTopicEvent,
+  CreateTopicEventDto,
+  deleteTopicEvent,
+  DeleteTopicEventDto,
+  fetchTopicEvent,
+  fetchTopicEvents,
 } from '@/api/core/event'
 
 import {
@@ -18,57 +20,76 @@ import {
 } from './common'
 
 export const EVENT_MAPPING_BASE_QK = ['event'] as const
-export const EVENT_COLLECTIONS_BASE_QK = ['event-collections'] as const
 
-export function getEventsQK() {
-  return [...EVENT_COLLECTIONS_BASE_QK, 'all'] as const
+export function getTopicEventsQK(topicId: EntityId, id?: EntityId | 'all') {
+  return id
+    ? [...EVENT_MAPPING_BASE_QK, 'topic', topicId, id]
+    : [...EVENT_MAPPING_BASE_QK, 'topic', topicId]
 }
 
-export function getEventQK(id: EntityId) {
-  return [...EVENT_MAPPING_BASE_QK, id] as const
-}
-
-export function useCreateEvent<TError = unknown>(
+export function useCreateTopicEvent<TError = unknown>(
   options: UseMutationOptions<
     ChaosResponse<ChaosEvent>,
     TError,
-    CreateEventDto
+    CreateTopicEventDto
   > = {}
 ) {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: createEvent,
+    mutationFn: createTopicEvent,
     ...options,
     onSuccess: (response, payload, context) => {
       options?.onSuccess?.(response, payload, context)
-      queryClient.setQueryData(getEventQK(response.data.id), response.data)
-      queryClient.invalidateQueries({ queryKey: EVENT_COLLECTIONS_BASE_QK })
+      queryClient.invalidateQueries({ queryKey: EVENT_MAPPING_BASE_QK })
+      queryClient.setQueryData(
+        getTopicEventsQK(response.data.topicId, response.data.id),
+        response.data
+      )
     },
   })
 }
 
-export function useEvent<TError = unknown>(
+export function useTopicEvent<TError = unknown>(
+  topicId: EntityId,
   id: EntityId,
   options: UseQueryOptions<ChaosResponse<ChaosEvent>, TError> = {}
 ) {
   return useQuery({
-    queryKey: getEventQK(id),
-    queryFn: () => fetchEvent(id),
+    queryKey: getTopicEventsQK(topicId, id),
+    queryFn: () => fetchTopicEvent(topicId, id),
     ...options,
   })
 }
 
-export function useDeleteEvent<TError = unknown>(
-  options: UseMutationOptions<ChaosResponse<null>, TError, EntityId> = {}
+export function useTopicEvents<TError = unknown>(
+  topicId: EntityId,
+  options: UseQueryOptions<ChaosResponse<ChaosEvent[]>, TError> = {}
+) {
+  return useQuery({
+    queryKey: getTopicEventsQK(topicId, 'all'),
+    queryFn: () => fetchTopicEvents(topicId),
+    ...options,
+  })
+}
+
+export function useDeleteTopicEvent<TError = unknown>(
+  options: UseMutationOptions<
+    ChaosResponse<null>,
+    TError,
+    DeleteTopicEventDto
+  > = {}
 ) {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: deleteEvent,
+    mutationFn: deleteTopicEvent,
     ...options,
     onSuccess: (response, payload, context) => {
       options?.onSuccess?.(response, payload, context)
-      queryClient.setQueryData(getEventQK(payload), null)
-      queryClient.invalidateQueries({ queryKey: EVENT_COLLECTIONS_BASE_QK })
+      queryClient.invalidateQueries({ queryKey: EVENT_MAPPING_BASE_QK })
+      queryClient.setQueryData(
+        getTopicEventsQK(payload.id, payload.topicId),
+        null
+      )
     },
   })
 }

@@ -4,7 +4,11 @@ import type {
   FastifyRegisterOptions,
 } from 'fastify'
 
-import { CreateEventSchema, EventIdSchema } from './event.dto'
+import {
+  CreateEventSchema,
+  TopicEventsURISchema,
+  TopicEventURISchema,
+} from './event.dto'
 import * as eventController from './event.controller'
 
 export function registerEventRoutes(
@@ -17,15 +21,25 @@ export function registerEventRoutes(
     {
       schema: {
         body: CreateEventSchema,
+        params: TopicEventsURISchema,
       },
     },
     eventController.createEvent
   )
   fastify.get(
+    '/',
+    {
+      schema: {
+        params: TopicEventsURISchema,
+      },
+    },
+    eventController.findEventsByTopicId
+  )
+  fastify.get(
     '/:id',
     {
       schema: {
-        params: EventIdSchema,
+        params: TopicEventURISchema,
       },
     },
     eventController.findEventById
@@ -34,7 +48,7 @@ export function registerEventRoutes(
     '/:id',
     {
       schema: {
-        params: EventIdSchema,
+        params: TopicEventURISchema,
       },
     },
     eventController.deleteEvent

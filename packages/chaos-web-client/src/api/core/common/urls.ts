@@ -13,15 +13,16 @@ function mkApiV1Url<TPath extends string>(path: TPath) {
 }
 
 /*
- * Events URLs
- */
-export const mkEventsUrl = () => mkApiV1Url('events')
-export const mkEventUrl = (topicId: EntityId) =>
-  `${mkEventsUrl()}/${topicId}` as const
-
-/*
  * Topics URLs
  */
 export const mkTopicsUrl = () => mkApiV1Url('topics')
 export const mkTopicUrl = (topicId: EntityId) =>
   `${mkTopicsUrl()}/${topicId}` as const
+
+/*
+ * Events URLs
+ */
+export const mkTopicEventsUrl = (topicId: EntityId) =>
+  `${mkTopicUrl(topicId)}/events`
+export const mkTopicEventUrl = (topicId: EntityId, eventId: EntityId) =>
+  `${mkTopicEventsUrl(topicId)}/${eventId}` as const

@@ -22,7 +22,7 @@ server.decorate('services', {
 server.register(cors)
 
 server.register(registerTopicRoutes, { prefix: '/v1/topics' })
-server.register(registerEventRoutes, { prefix: '/v1/events' })
+server.register(registerEventRoutes, { prefix: '/v1/topics/:topicId/events' })
 
 const start = async () => {
   try {

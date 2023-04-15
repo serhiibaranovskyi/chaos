@@ -15,21 +15,33 @@ export const EventSchema = Type.Object({
   updatedAt: Type.Date(),
 })
 
+export const EventListSchema = Type.Array(EventSchema)
+
 export const EventResponseSchema = makeResponseSchema(EventSchema)
 
+export const EventListResponseSchema = makeResponseSchema(EventListSchema)
+
 export const CreateEventSchema = Type.Object({
-  topicId: Type.Number(),
   payload: CreateEventPayloadSchema,
 })
 
-export const EventIdSchema = Type.Object({
+export const TopicEventsURISchema = Type.Object({
+  topicId: Type.Number(),
+})
+
+export const TopicEventURISchema = Type.Object({
   id: Type.Number(),
+  topicId: Type.Number(),
 })
 
 export type EventResponseDto = Static<typeof EventResponseSchema>
+
+export type EventListResponseDto = Static<typeof EventListResponseSchema>
 
 export type CreateEventDto = Static<typeof CreateEventSchema>
 
 export type CreateEventPayloadDto = Static<typeof CreateEventPayloadSchema>
 
-export type EventIdDto = Static<typeof EventIdSchema>
+export type TopicEventURIDto = Static<typeof TopicEventURISchema>
+
+export type TopicEventsURIDto = Static<typeof TopicEventsURISchema>

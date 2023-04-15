@@ -33,6 +33,14 @@ export class EventService {
   }
 
   @withPrismaErrorHook()
+  public findByTopicId(topicId: number): Promise<Event[]> {
+    return this.db.event.findMany({
+      orderBy: [{ createdAt: 'desc' }],
+      where: { topicId },
+    })
+  }
+
+  @withPrismaErrorHook()
   public async delete(id: number) {
     await this.db.event.delete({ where: { id } })
   }
